@@ -322,6 +322,41 @@ impl From<u8> for ACCEL_HPF {
 
 #[allow(non_camel_case_types)]
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
+/// Digital Low Pass Filter Configuration Values
+pub enum DLPF_CFG {
+    /// Accelerometer Bandwidth: 260 Hz, Gyroscope Bandwidth: 256 Hz
+    _260_256 = 0,
+    /// Accelerometer Bandwidth: 185 Hz, Gyroscope Bandwidth: 188 Hz
+    _185_188 = 1,
+    /// Accelerometer Bandwidth:  94 Hz, Gyroscope Bandwidth:  98 Hz
+    _94_98 = 2,
+    /// Accelerometer Bandwidth:  44 Hz, Gyroscope Bandwidth:  42 Hz
+    _44_42 = 3,
+    /// Accelerometer Bandwidth:  21 Hz, Gyroscope Bandwidth:  20 Hz
+    _21_20 = 4,
+    /// Accelerometer Bandwidth:  10 Hz, Gyroscope Bandwidth:  10 Hz
+    _10_10 = 5,
+    /// Accelerometer Bandwidth:   5 Hz, Gyroscope Bandwidth:   5 Hz
+    _5_5 = 6,
+}
+
+impl From<u8> for DLPF_CFG {
+    fn from(range: u8) -> Self {
+        match range {
+            0 => DLPF_CFG::_260_256,
+            1 => DLPF_CFG::_185_188,
+            2 => DLPF_CFG::_94_98,
+            3 => DLPF_CFG::_44_42,
+            4 => DLPF_CFG::_21_20,
+            5 => DLPF_CFG::_10_10,
+            6 => DLPF_CFG::_5_5,
+            _ => DLPF_CFG::_260_256,
+        }
+    }
+}
+
+#[allow(non_camel_case_types)]
+#[derive(Copy, Clone, Debug, Eq, PartialEq)]
 /// Clock Source Select Values
 pub enum CLKSEL {
     /// Internal 8MHz oscillator

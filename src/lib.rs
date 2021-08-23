@@ -189,6 +189,24 @@ where
         Ok(ACCEL_HPF::from(mode))
     }
 
+     // set digital low pass filter mode
+     pub fn set_dlpf(&mut self, mode: DLPF_CFG) -> Result<(), Mpu6050Error<E>> {
+        Ok(self.write_bits(
+            CONFIG::ADDR,
+            CONFIG::DLPF_CFG.bit,
+            CONFIG::DLPF_CFG.length,
+            mode as u8,
+        )?)
+    }
+
+    // get digital low pass filter mode
+    pub fn get_dlpf(&mut self) -> Result<DLPF_CFG, Mpu6050Error<E>> {
+        let mode: u8 =
+            self.read_bits(CONFIG::ADDR, CONFIG::DLPF_CFG.bit, CONFIG::DLPF_CFG.length)?;
+
+        Ok(DLPF_CFG::from(mode))
+    }
+
     /// Set gyro range, and update sensitivity accordingly
     pub fn set_gyro_range(&mut self, range: GyroRange) -> Result<(), Mpu6050Error<E>> {
         self.write_bits(GYRO_CONFIG::ADDR,
@@ -341,7 +359,7 @@ where
     pub fn get_gyro(&mut self) -> Result<Vector3<f32>, Mpu6050Error<E>> {
         let mut gyro = self.read_rot(GYRO_REGX_H)?;
 
-        gyro *= PI_180 * self.gyro_sensitivity;
+        gyro *= PI_180 / self.gyro_sensitivity;
 
         Ok(gyro)
     }
